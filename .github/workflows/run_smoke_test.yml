@@ -153,10 +153,8 @@ jobs:
           node-version: 18.x
 
       - name: Redact sensitive information
-        needs: smoke-test
         run: |
           ls
-          node ~/scubagoggles/reporter/scripts/redaction.js
 
       - name: Run Lighthouse CI
         run: |
