@@ -1,7 +1,7 @@
 name: Run Smoke Test
 on:
   pull_request:
-    types: [opened, reopened, edited]
+    types: [opened, reopened, edited, converted_to_draft]
     branches:
       - "main"
   pull_request_review:
