@@ -125,6 +125,7 @@ jobs:
         run: |
           ${{ env.SCUBAGOGGLES_ACTIVATE_VENV }}
           pytest ./scubagoggles/Testing/Functional/SmokeTests/ -vvv --subjectemail="${{ secrets.GWS_SUBJECT_EMAIL }}" --customerdomain="${{ secrets.GWS_DOMAIN }}"
+          node ./scubagoggles/reporter/scripts/redaction.js
           FOUNDIT=$(find /home/runner/scubagoggles -type d -name "GWSBaselineConformance_*")
           echo $FOUNDIT
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
@@ -147,9 +148,7 @@ jobs:
           path: |
             /home/runner/scubagoggles
           key: ${{ runner.os }}-baseline-${{ steps.baselinepath.outputs.cachepath }}
-        run: |
-          echo "check available files: "
-          ls
+
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
         with:
