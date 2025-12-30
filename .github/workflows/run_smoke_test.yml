@@ -129,11 +129,10 @@ jobs:
           echo $FOUNDIT
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
 
-      # - name: Redact sensitive information
-      #   uses: actions/checkout@v4
-      #   run: |
-      #     ls
-      #     node redaction.js
+      - name: Redact sensitive information
+        run: |
+          ls
+          node redaction.js
 
       - name: Cache the output directory
         id: baseline
