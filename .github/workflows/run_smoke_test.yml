@@ -8,13 +8,13 @@ on:
     types: [submitted]
   push:
     # These paths are primarily for workflow testing purposes
-    paths:
-      - ".github/workflows/run_smoke_test.yml"
-      - ".github/actions/setup-dependencies-windows/action.yml"
-      - ".github/actions/setup-dependencies-macos/action.yml"
-    branches:
-      - "main"
-      - "*smoketest*"
+    # paths:
+    #   - ".github/workflows/run_smoke_test.yml"
+    #   - ".github/actions/setup-dependencies-windows/action.yml"
+    #   - ".github/actions/setup-dependencies-macos/action.yml"
+    # branches:
+    #   - "main"
+    #   - "*smoketest*"
   workflow_call:
   workflow_dispatch:
     inputs:
@@ -128,6 +128,12 @@ jobs:
           FOUNDIT=$(find /home/runner/scubagoggles -type d -name "GWSBaselineConformance_*")
           echo $FOUNDIT
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
+
+      - name: Redact sensitive information
+        uses: actions/checkout@v4
+        run: |
+          ls
+          node redaction.js
 
       - name: Cache the output directory
         id: baseline
