@@ -1,5 +1,5 @@
 function redaction() {
-    console.log('Starting redaction')
+    console.log('Starting redaction process')
 
     try {
         const identityTable = document.querySelectorAll("table")[0]
