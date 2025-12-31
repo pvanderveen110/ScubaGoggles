@@ -159,7 +159,7 @@ jobs:
           echo "files inquiry: /home/runner/scubagoggles"
           FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \))
           $FILESET |
-            try {
+
                 const identityTable = document.querySelectorAll("table")[0]
 
                 let tbody = identityTable.querySelector("tbody")
@@ -178,9 +178,6 @@ jobs:
 
                 }
 
-            } catch (error) {
-                console.error(`Error redacting `)
-            }
           done
 
 
