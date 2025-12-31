@@ -127,9 +127,10 @@ jobs:
           pytest ./scubagoggles/Testing/Functional/SmokeTests/ -vvv --subjectemail="${{ secrets.GWS_SUBJECT_EMAIL }}" --customerdomain="${{ secrets.GWS_DOMAIN }}"
           FOUNDIT=$(find /home/runner/scubagoggles -type d -name "GWSBaselineConformance_*")
           echo $FOUNDIT
-          echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
-          FILESET=$(find $FOUNDIT -type f \( -name "*.html" -o -name "*.htm" \)) | node ./scubagoggles/reporter/scripts/redaction.js
+          FILESET=$(find $FOUNDIT -type f \( -name "*.html" -o -name "*.htm" \))
+          echo "Found files?: "
           echo $FILESET
+          echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
 
       # - name: Cache the output directory
       #   id: baseline
