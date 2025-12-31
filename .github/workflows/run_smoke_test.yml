@@ -130,6 +130,7 @@ jobs:
           FILESET=$(find $FOUNDIT -type f \( -name "*.html" -o -name "*.htm" \))
           echo "Found files?: "
           echo $FILESET
+          $FILESET -exec node ./scubagoggles/reporter/scripts/redaction.js
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
 
       # - name: Cache the output directory
