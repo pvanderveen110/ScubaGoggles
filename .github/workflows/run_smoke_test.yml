@@ -61,8 +61,6 @@ jobs:
           echo "opa-version=$opaversion_val" >> "$GITHUB_OUTPUT"
   smoke-test:
     needs: configuration
-    permissions:
-      content: write
     strategy:
       fail-fast: false
       matrix:
@@ -71,6 +69,8 @@ jobs:
         # ctrl + f and search "python-3.<minor>.<patch>-<darwin-arm64/win32/linux>" for supported versions
         python-version: ${{ fromJSON(needs.configuration.outputs.python-version) }}
     runs-on: ${{ matrix.operating-system }}
+    permissions:
+      content: write
     outputs:
       baseline-path: ${{ steps.baselinepath.outputs.cachepath }}
     steps:
