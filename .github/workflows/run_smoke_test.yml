@@ -151,6 +151,8 @@ jobs:
           path: |
             /home/runner/scubagoggles
           key: ${{ runner.os }}-baseline-${{ steps.baselinepath.outputs.cachepath }}
+
+      - name: List Files restored
         run: |
           echo "files inquiry: "
           ls
