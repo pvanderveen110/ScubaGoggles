@@ -120,9 +120,6 @@ jobs:
           pytest ./scubagoggles/Testing/Functional/SmokeTests/ -vvv --subjectemail="${{ secrets.GWS_SUBJECT_EMAIL }}" --customerdomain="${{ secrets.GWS_DOMAIN }}"
 
       - name: Run ScubaGoggles and check for correct output (ubuntu)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18.x
         if: ${{ matrix.operating-system == 'ubuntu-latest' }}
         id: baselinepath
         run: |
@@ -133,15 +130,15 @@ jobs:
           FILESET=$(find $FOUNDIT -type f \( -name "*.html" -o -name "*.htm" \))
           echo "Found files?: "
           echo $FILESET
-          $FILESET | node ./scubagoggles/reporter/scripts/redaction.js
+          # $FILESET -exec node ./scubagoggles/reporter/scripts/redaction.js
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
 
-      # - name: Cache the output directory
-      #   id: baseline
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: /home/runner/scubagoggles
-      #     key: ${{ runner.os }}-baseline-${{ steps.baselinepath.outputs.cachepath }}
+      - name: Cache the output directory
+        id: baseline
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/scubagoggles
+          key: ${{ runner.os }}-baseline-${{ steps.baselinepath.outputs.cachepath }}
 
   lhci:
     runs-on: ubuntu-latest
@@ -154,6 +151,11 @@ jobs:
           path: |
             /home/runner/scubagoggles
           key: ${{ runner.os }}-baseline-${{ steps.baselinepath.outputs.cachepath }}
+        run: |
+          echo "files inquiry: "
+          ls
+          echo "files inquiry: /home/runner/scubagoggles"
+          ls /home/runner/scubagoggles
 
       - name: Use Node.js 18.x
         uses: actions/setup-node@v3
