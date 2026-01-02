@@ -218,7 +218,6 @@ def run_selenium(browser, customerdomain):
     reports_table = get_reports_table(browser)
 
     js_script = """
-            function redaction() {
                 console.log('Starting redaction')
 
                 try {
@@ -243,11 +242,8 @@ def run_selenium(browser, customerdomain):
                 } catch (error) {
                     console.error(`Error redacting `)
                 }
-            }
             """
     browser.execute_script(js_script)
-    browser.execute_script("redaction()")
-
 
     if len(reports_table) == 11:
         for i in range(len(reports_table)):
