@@ -247,10 +247,8 @@ def run_selenium(browser, customerdomain):
                 }
             }
             """
-    WebDriverWait(browser, 10).until(
-        browser.execute_script(js_script)
-        browser.execute_script("redaction()")
-    )
+    browser.execute_script(js_script)
+    browser.execute_script("redaction()")
 
 
     if len(reports_table) == 11:
