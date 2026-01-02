@@ -308,40 +308,39 @@ def run_selenium(browser, customerdomain):
             current_url = browser.current_url()
             assert parent_report_anchor_href == current_url
 
+            js_script = """
+                console.log('Starting redaction')
+
+                try {
+                    const identityTable = document.querySelectorAll("table")[0]
+
+                    let tbody = identityTable.querySelector("tbody")
+
+                    if (!tbody) throw new Error(
+                        `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
+                    )
+
+                    if (tbody.children[1].children) {
+                        console.log('found identification row: ', tbody.children[1].children)
+                        let identityData = tbody.children[1].children
+
+                        for (let cell of identityData) {
+                            cell.textContent = '[Redacted]'
+                        }
+
+                    }
+
+                } catch (error) {
+                    console.error(`Error redacting `)
+                }
+                """
+            browser.execute_script(js_script)
+
             WebDriverWait(browser, 10).until(
                 expected_conditions.presence_of_element_located(
                     (By.TAG_NAME, 'body')
                 )
             )
-
-            if i == 11:
-                js_script = """
-                    console.log('Starting redaction')
-
-                    try {
-                        const identityTable = document.querySelectorAll("table")[0]
-
-                        let tbody = identityTable.querySelector("tbody")
-
-                        if (!tbody) throw new Error(
-                            `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-                        )
-
-                        if (tbody.children[1].children) {
-                            console.log('found identification row: ', tbody.children[1].children)
-                            let identityData = tbody.children[1].children
-
-                            for (let cell of identityData) {
-                                cell.textContent = '[Redacted]'
-                            }
-
-                        }
-
-                    } catch (error) {
-                        console.error(`Error redacting `)
-                    }
-                """
-                browser.execute_script(js_script)
 
     else:
         raise ValueError('Expected the reports table to have a length of 11')
