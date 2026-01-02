@@ -308,6 +308,11 @@ def run_selenium(browser, customerdomain):
             current_url = browser.current_url()
             assert parent_report_anchor_href == current_url
 
+            WebDriverWait(browser, 10).until(
+                expected_conditions.presence_of_element_located(
+                    (By.TAG_NAME, 'body')
+                )
+            )
             js_script = """
                 console.log('Starting redaction')
 
@@ -335,13 +340,6 @@ def run_selenium(browser, customerdomain):
                 }
                 """
             browser.execute_script(js_script)
-
-            WebDriverWait(browser, 10).until(
-                expected_conditions.presence_of_element_located(
-                    (By.TAG_NAME, 'body')
-                )
-            )
-
     else:
         raise ValueError('Expected the reports table to have a length of 11')
 
