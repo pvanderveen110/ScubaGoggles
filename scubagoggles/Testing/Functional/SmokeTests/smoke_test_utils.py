@@ -10,6 +10,7 @@ import logging
 from operator import itemgetter
 from pathlib import Path
 
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -217,38 +218,38 @@ def run_selenium(browser, customerdomain):
     # Before entering loop check that we actually display 9 rows in table
     reports_table = get_reports_table(browser)
 
-    print(dir(browser))
+    chrome_driver = webdriver.Chrome()
 
-    # js_script = """
-    #         function redaction() {
-    #             console.log('Starting redaction')
+    js_script = """
+            function redaction() {
+                console.log('Starting redaction')
 
-    #             try {
-    #                 const identityTable = document.querySelectorAll("table")[0]
+                try {
+                    const identityTable = document.querySelectorAll("table")[0]
 
-    #                 let tbody = identityTable.querySelector("tbody")
+                    let tbody = identityTable.querySelector("tbody")
 
-    #                 if (!tbody) throw new Error(
-    #                     `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-    #                 )
+                    if (!tbody) throw new Error(
+                        `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
+                    )
 
-    #                 if (tbody.children[1].children) {
-    #                     console.log('found identification row: ', tbody.children[1].children)
-    #                     let identityData = tbody.children[1].children
+                    if (tbody.children[1].children) {
+                        console.log('found identification row: ', tbody.children[1].children)
+                        let identityData = tbody.children[1].children
 
-    #                     for (let cell of identityData) {
-    #                         cell.textContent = '[Redacted]'
-    #                     }
+                        for (let cell of identityData) {
+                            cell.textContent = '[Redacted]'
+                        }
 
-    #                 }
+                    }
 
-    #             } catch (error) {
-    #                 console.error(`Error redacting `)
-    #             }
-    #         }
-    #         """
-    # browser.execute_script(js_script)
-    # browser.execute_script("redaction()")
+                } catch (error) {
+                    console.error(`Error redacting `)
+                }
+            }
+            """
+    chrome_driver.execute_script(js_script)
+    chrome_driver.execute_script("redaction()")
 
 
     if len(reports_table) == 11:
