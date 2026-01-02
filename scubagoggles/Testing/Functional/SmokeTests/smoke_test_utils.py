@@ -10,7 +10,6 @@ import logging
 from operator import itemgetter
 from pathlib import Path
 
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -218,7 +217,7 @@ def run_selenium(browser, customerdomain):
     # Before entering loop check that we actually display 9 rows in table
     reports_table = get_reports_table(browser)
 
-    chrome_driver = webdriver.Chrome()
+    chrome_driver = browser.Chrome()
 
     js_script = """
             function redaction() {
