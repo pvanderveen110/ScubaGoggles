@@ -314,7 +314,7 @@ def run_selenium(browser, customerdomain):
                 )
             )
 
-    if len(WebDriverWait(browser, 15)):
+    if WebDriverWait(browser, 15):
         print('RUN FINISHED -- ENTER JS_SCRIPT CALL')
         js_script = """
             console.log('Starting redaction')
