@@ -51,6 +51,20 @@ body {
     color: var(--text-color)
 }
 
+.spoiler-text {
+  color: black; /* Color of the text */
+  background-color: black; /* Hides the text by making background the same color */
+  /* For a blur effect, use: */
+  /* filter: blur(4px); */
+}
+
+.spoiler-text:hover {
+  color: white; /* Reveals text on hover */
+  background-color: transparent;
+  /* filter: none; */
+}
+
+
 .alternating tr:nth-child(even) {
     background-color: var(--cap-even);
 }
