@@ -217,34 +217,6 @@ def run_selenium(browser, customerdomain):
     # Before entering loop check that we actually display 9 rows in table
     reports_table = get_reports_table(browser)
 
-    # js_script = """
-    #     console.log('Starting redaction')
-
-    #     try {
-    #         const identityTable = document.querySelectorAll("table")[0]
-
-    #         let tbody = identityTable.querySelector("tbody")
-
-    #         if (!tbody) throw new Error(
-    #             `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-    #         )
-
-    #         if (tbody.children[1].children) {
-    #             console.log('found identification row: ', tbody.children[1].children)
-    #             let identityData = tbody.children[1].children
-
-    #             for (let cell of identityData) {
-    #                 cell.textContent = '[Redacted]'
-    #             }
-
-    #         }
-
-    #     } catch (error) {
-    #         console.error(`Error redacting `)
-    #     }
-    #         """
-    # browser.execute_script(js_script)
-
     if len(reports_table) == 11:
         for i in range(len(reports_table)):
 
@@ -313,7 +285,36 @@ def run_selenium(browser, customerdomain):
                     (By.TAG_NAME, 'body')
                 )
             )
-    else:
+    try:
+        print('finished run')
+        js_script = """
+        console.log('Starting redaction')
+
+        try {
+            const identityTable = document.querySelectorAll("table")[0]
+
+            let tbody = identityTable.querySelector("tbody")
+
+            if (!tbody) throw new Error(
+                `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
+            )
+
+            if (tbody.children[1].children) {
+                console.log('found identification row: ', tbody.children[1].children)
+                let identityData = tbody.children[1].children
+
+                for (let cell of identityData) {
+                    cell.textContent = '[Redacted]'
+                }
+
+            }
+
+        } catch (error) {
+            console.error(`Error redacting `)
+        }
+            """
+        browser.execute_script(js_script)
+    except:
         raise ValueError('Expected the reports table to have a length of 11')
 
 
