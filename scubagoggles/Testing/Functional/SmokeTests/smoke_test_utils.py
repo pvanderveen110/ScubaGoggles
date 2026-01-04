@@ -315,7 +315,6 @@ def run_selenium(browser, customerdomain):
                 )
         else:
             raise ValueError('Expected the reports table to have a length of 11')
-    finally:
         print('RUN FINISHED -- ENTER JS_SCRIPT CALL')
         js_script = """
             console.log('Starting redaction')
@@ -344,7 +343,8 @@ def run_selenium(browser, customerdomain):
             }
                 """
         browser.execute_script(js_script)
-
+    finally:
+        print('FINALLY')
 
 def verify_navigation_links(browser):
     """
