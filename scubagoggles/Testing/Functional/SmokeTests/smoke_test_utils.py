@@ -217,134 +217,107 @@ def run_selenium(browser, customerdomain):
     # Before entering loop check that we actually display 9 rows in table
     reports_table = get_reports_table(browser)
 
-    # js_script = """
-    #     console.log('Starting redaction')
+    js_script = """
+        console.log('Starting redaction')
 
-    #     try {
-    #         const identityTable = document.querySelectorAll("table")[0]
+        try {
+            const identityTable = document.querySelectorAll("table")[0]
 
-    #         let tbody = identityTable.querySelector("tbody")
+            let tbody = identityTable.querySelector("tbody")
 
-    #         if (!tbody) throw new Error(
-    #             `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-    #         )
+            if (!tbody) throw new Error(
+                `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
+            )
 
-    #         if (tbody.children[1].children) {
-    #             console.log('found identification row: ', tbody.children[1].children)
-    #             let identityData = tbody.children[1].children
+            if (tbody.children[1].children) {
+                console.log('found identification row: ', tbody.children[1].children)
+                let identityData = tbody.children[1].children
 
-    #             for (let cell of identityData) {
-    #                 cell.textContent = '[Redacted]'
-    #             }
-
-    #         }
-
-    #     } catch (error) {
-    #         console.error(`Error redacting `)
-    #     }
-    #         """
-    # browser.execute_script(js_script)
-    try:
-        if len(reports_table) == 11:
-            for i in range(len(reports_table)):
-
-                # Check if customerdomain is present in agency table
-                # Skip tool version if assessing the parent report
-                verify_tenant_table(browser, customerdomain, True)
-
-                reports_table = get_reports_table(browser)[i]
-                baseline_report = reports_table.find_elements(By.TAG_NAME, 'td')[0]
-                product = baseline_report.text
-                assert product in products
-
-                individual_report_anchor = baseline_report.find_element(By.TAG_NAME, 'a')
-                individual_report_anchor_href = individual_report_anchor.get_attribute('href')
-                individual_report_anchor.click()
-                current_url = browser.current_url()
-                assert individual_report_anchor_href == current_url
-
-                # Check at the individual report level
-                verify_navigation_links(browser)
-                h1 = browser.find_element(By.TAG_NAME, 'h1').text
-                assert h1 == products[product]['title']
-
-                # Check if customerdomain and tool version are present in individual report
-                verify_tenant_table(browser, customerdomain, False)
-
-                policy_tables = browser.find_elements(By.CSS_SELECTOR, "table:not(.dns-logs table)")
-                for table in policy_tables[1:]:
-
-                    # Verify policy table headers are correct
-                    headers = (
-                        table.find_element(By.TAG_NAME, 'thead')
-                        .find_elements(By.TAG_NAME, 'tr')[0]
-                        .find_elements(By.TAG_NAME, 'th')
-                    )
-                    if len(headers) == 3:
-                        # Is this the rules table?
-                        assert headers[0].text == 'Alert Name'
-                        assert headers[1].text == 'Description'
-                        assert headers[2].text == 'Status'
-                    else:
-                        # If not, this has to be a generic result table
-                        assert len(headers) == 5
-                        assert headers[0].text == 'Control ID'
-                        assert headers[1].text == 'Requirement'
-                        assert headers[2].text == 'Result'
-                        assert headers[3].text == 'Criticality'
-                        assert headers[4].text == 'Details'
-
-                    # Verify policy table rows are populated
-                    tbody = table.find_element(By.TAG_NAME, 'tbody')
-                    rows = tbody.find_elements(By.TAG_NAME, 'tr')
-                    assert len(rows) > 0
-
-                parent_report_anchor = (
-                    browser.find_element(By.TAG_NAME, 'header')
-                    .find_element(By.TAG_NAME, 'a')
-                )
-                parent_report_anchor_href = parent_report_anchor.get_attribute('href')
-                parent_report_anchor.click()
-                current_url = browser.current_url()
-                assert parent_report_anchor_href == current_url
-
-                WebDriverWait(browser, 10).until(
-                    expected_conditions.presence_of_element_located(
-                        (By.TAG_NAME, 'body')
-                    )
-                )
-        else:
-            raise ValueError('Expected the reports table to have a length of 11')
-        print('RUN FINISHED -- ENTER JS_SCRIPT CALL')
-        js_script = """
-            console.log('Starting redaction')
-
-            try {
-                const identityTable = document.querySelectorAll("table")[0]
-
-                let tbody = identityTable.querySelector("tbody")
-
-                if (!tbody) throw new Error(
-                    `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-                )
-
-                if (tbody.children[1].children) {
-                    console.log('found identification row: ', tbody.children[1].children)
-                    let identityData = tbody.children[1].children
-
-                    for (let cell of identityData) {
-                        cell.textContent = '[Redacted]'
-                    }
-
+                for (let cell of identityData) {
+                    cell.textContent = '[Redacted]'
                 }
 
-            } catch (error) {
-                console.error(`Error redacting `)
             }
-                """
-        browser.execute_script(js_script)
-    finally:
-        print('FINALLY')
+
+        } catch (error) {
+            console.error(`Error redacting `)
+        }
+            """
+    browser.execute_script(js_script)
+
+    if len(reports_table) == 11:
+        for i in range(len(reports_table)):
+
+            # Check if customerdomain is present in agency table
+            # Skip tool version if assessing the parent report
+            verify_tenant_table(browser, customerdomain, True)
+
+            reports_table = get_reports_table(browser)[i]
+            baseline_report = reports_table.find_elements(By.TAG_NAME, 'td')[0]
+            product = baseline_report.text
+            assert product in products
+
+            individual_report_anchor = baseline_report.find_element(By.TAG_NAME, 'a')
+            individual_report_anchor_href = individual_report_anchor.get_attribute('href')
+            individual_report_anchor.click()
+            current_url = browser.current_url()
+            assert individual_report_anchor_href == current_url
+
+            # Check at the individual report level
+            verify_navigation_links(browser)
+            h1 = browser.find_element(By.TAG_NAME, 'h1').text
+            assert h1 == products[product]['title']
+
+            # Check if customerdomain and tool version are present in individual report
+            verify_tenant_table(browser, customerdomain, False)
+
+            policy_tables = browser.find_elements(By.CSS_SELECTOR, "table:not(.dns-logs table)")
+            for table in policy_tables[1:]:
+
+                # Verify policy table headers are correct
+                headers = (
+                    table.find_element(By.TAG_NAME, 'thead')
+                    .find_elements(By.TAG_NAME, 'tr')[0]
+                    .find_elements(By.TAG_NAME, 'th')
+                )
+                if len(headers) == 3:
+                    # Is this the rules table?
+                    assert headers[0].text == 'Alert Name'
+                    assert headers[1].text == 'Description'
+                    assert headers[2].text == 'Status'
+                else:
+                    # If not, this has to be a generic result table
+                    assert len(headers) == 5
+                    assert headers[0].text == 'Control ID'
+                    assert headers[1].text == 'Requirement'
+                    assert headers[2].text == 'Result'
+                    assert headers[3].text == 'Criticality'
+                    assert headers[4].text == 'Details'
+
+                # Verify policy table rows are populated
+                tbody = table.find_element(By.TAG_NAME, 'tbody')
+                rows = tbody.find_elements(By.TAG_NAME, 'tr')
+                assert len(rows) > 0
+
+            parent_report_anchor = (
+                browser.find_element(By.TAG_NAME, 'header')
+                .find_element(By.TAG_NAME, 'a')
+            )
+            parent_report_anchor_href = parent_report_anchor.get_attribute('href')
+            parent_report_anchor.click()
+            current_url = browser.current_url()
+            assert parent_report_anchor_href == current_url
+
+            WebDriverWait(browser, 10).until(
+                expected_conditions.presence_of_element_located(
+                    (By.TAG_NAME, 'body')
+                )
+            )
+
+            # js_script = """
+
+    else:
+        raise ValueError('Expected the reports table to have a length of 11')
 
 def verify_navigation_links(browser):
     """
