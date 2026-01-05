@@ -81,10 +81,3 @@ class SmokeTest:
         except (ValueError, AssertionError, Exception) as e:
             browser.quit()
             pytest.fail(f'An error occurred, {e}')
-
-    @staticmethod
-    def test_redact_scubagoggles_report(browser):
-        try:
-            redact_info(browser)
-        except (ValueError, AssertionError, Exception) as e:
-            pytest.fail(f'An error occurred during redaction, {e}')

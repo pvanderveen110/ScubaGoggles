@@ -15,7 +15,8 @@ function redaction() {
             let identityData = tbody.children[1].children
 
             for (let cell of identityData) {
-                cell.textContent = '[Redacted]'
+                // cell.textContent = '[Redacted]'
+                cell.classList.add('redact')
             }
 
         }

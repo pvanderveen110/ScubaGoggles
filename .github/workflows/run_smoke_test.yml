@@ -143,6 +143,8 @@ jobs:
   lhci:
     runs-on: ubuntu-latest
     needs: smoke-test
+    permissions:
+      contents: write
     if: ${{ always() }}
     steps:
       - name: Restore cached baseline folder
@@ -161,6 +163,11 @@ jobs:
         run: |
           echo "files inquiry: /home/runner/scubagoggles"
           ls /home/runner/scubagoggles
+          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) -exec sed -i '/<td class="redact">/,/<\/td>/d' {} +
+          echo "Found files?: "
+          echo $FILESET
+
+
 
       - name: Run Lighthouse CI
         run: |
