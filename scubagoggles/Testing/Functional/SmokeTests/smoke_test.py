@@ -78,8 +78,13 @@ class SmokeTest:
             report_path: str = top_report_url(output_path)
             browser.get(report_path)
             run_selenium(browser, customerdomain)
-            redact_info(browser)
         except (ValueError, AssertionError, Exception) as e:
-            redact_info(browser)
             browser.quit()
             pytest.fail(f'An error occurred, {e}')
+
+    @staticmethod
+    def test_redact_scubagoggles_report(browser):
+        try:
+            redact_info(browser)
+        except (ValueError, AssertionError, Exception) as e:
+            pytest.fail(f'An error occurred during redaction, {e}')

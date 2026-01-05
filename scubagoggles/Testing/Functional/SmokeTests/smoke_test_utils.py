@@ -289,12 +289,6 @@ def run_selenium(browser, customerdomain):
     else:
         raise ValueError('Expected the reports table to have a length of 11')
 
-    try:
-        redact_info(browser)
-    except:
-        redact_info(browser)
-        print("redaction failed")
-
 
 def verify_navigation_links(browser):
     """
