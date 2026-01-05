@@ -1,4 +1,4 @@
-export function redaction() {
+function redaction() {
     console.log('Starting redaction')
 
     try {
