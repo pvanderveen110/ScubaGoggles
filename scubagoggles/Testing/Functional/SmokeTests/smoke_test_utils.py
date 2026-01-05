@@ -292,6 +292,7 @@ def run_selenium(browser, customerdomain):
     try:
         redact_info(browser)
     except:
+        redact_info(browser)
         print("redaction failed")
 
 
@@ -417,6 +418,6 @@ def redact_info(browser):
             console.error(`Error redacting `)
         }
             """
-        return browser.execute_script(js_script)
+        browser.execute_script(js_script)
     except:
         print('redaction failed')
