@@ -412,4 +412,4 @@ def redact_info(browser):
             console.error(`Error redacting `)
         }
             """
-    browser.execute_script(js_script)
+    return browser.execute_script(js_script)
