@@ -163,7 +163,7 @@ jobs:
         run: |
           echo "files inquiry: /home/runner/scubagoggles"
           ls /home/runner/scubagoggles
-          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \))
+          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) | grep -ri '(?i)class\s*=\s*"\s*(?:[^"]*\s+)?redact(?:\s+[^"]*)?\s*"'
           echo "Found files?: "
           echo $FILESET
         shell: bash
