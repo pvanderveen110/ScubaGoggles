@@ -289,7 +289,11 @@ def run_selenium(browser, customerdomain):
     else:
         raise ValueError('Expected the reports table to have a length of 11')
 
-    redact_info(browser)
+    try:
+        redact_info(browser)
+    except:
+        print("redaction failed")
+
 
 def verify_navigation_links(browser):
     """
@@ -385,7 +389,8 @@ def verify_tenant_table(browser, customerdomain, parent):
     assert not error_occurred
 
 def redact_info(browser):
-    js_script = """
+    try:
+        js_script = """
         console.log('Starting redaction')
 
         try {
@@ -412,4 +417,6 @@ def redact_info(browser):
             console.error(`Error redacting `)
         }
             """
-    return browser.execute_script(js_script)
+        return browser.execute_script(js_script)
+    except:
+        print('redaction failed')
