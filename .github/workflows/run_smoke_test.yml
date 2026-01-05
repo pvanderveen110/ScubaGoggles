@@ -163,7 +163,7 @@ jobs:
         run: |
           echo "files inquiry: /home/runner/scubagoggles"
           ls /home/runner/scubagoggles
-          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) -exec sed -i '/<td class="redact">/,/<\/td>/d' {} +
+          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) | sed -i '/<td class="redact">/,/<\/td>/d' {} +
           echo "Found files?: "
           echo $FILESET
 
@@ -172,7 +172,7 @@ jobs:
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.15.x
-          lhci autorun --collect.staticDistDir=/home/runner/scubagoggles --outputDir=./ --collect.maxAutodiscoverUrls=12 --upload.target=temporary-public-storage --upload.githubAppToken="${{ secrets.LHCI_GITHUB_APP_TOKEN }}" --collect.skipAudits=full-page-screenshot --skipAudits=full-page-screenshot
+          lhci autorun --collect.staticDistDir=/home/runner/scubagoggles --outputDir=./ --collect.maxAutodiscoverUrls=12 --upload.target=temporary-public-storage --upload.githubAppToken="${{ secrets.LHCI_GITHUB_APP_TOKEN }}"
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.pull_request.head.sha || github.sha }}
