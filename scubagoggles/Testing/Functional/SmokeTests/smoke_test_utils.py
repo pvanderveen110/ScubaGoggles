@@ -402,8 +402,8 @@ def redact_info(browser):
                 let identityData = tbody.children[1].children
 
                 for (let cell of identityData) {
-                    // cell.textContent = '[Redacted]'
-                    cell.classList.add('.spoiler-text')
+                    cell.textContent = '[Redacted]'
+                    // cell.classList.add('.spoiler-text')
                 }
 
             }
