@@ -1,3 +1,4 @@
+import { redaction } from "./redaction";
 /**
  * Adds the red, green, yellow, and gray coloring to the individual report pages.
  */
@@ -314,4 +315,5 @@ window.addEventListener('DOMContentLoaded', () => {
     applyScopeAttributes();
     mountDarkMode();
     truncateDNSTables(MAX_DNS_ENTRIES);
+    redaction()
 });

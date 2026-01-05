@@ -59,7 +59,7 @@ body {
 }
 
 .spoiler-text:hover {
-  color: white; /* Reveals text on hover */
+  color: black; /* Reveals text on hover */
   background-color: transparent;
   /* filter: none; */
 }
