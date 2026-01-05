@@ -163,9 +163,10 @@ jobs:
         run: |
           echo "files inquiry: /home/runner/scubagoggles"
           ls /home/runner/scubagoggles
-          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) | sed -i '/<td class="redact">/,/<\/td>/d' {} +
+          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \)) | xargs -0 grep -lZ 'class="redact"' | xargs -0 sed -i 's/[\s\S]*/""/g'
           echo "Found files?: "
           echo $FILESET
+        shell: bash
 
 
 
