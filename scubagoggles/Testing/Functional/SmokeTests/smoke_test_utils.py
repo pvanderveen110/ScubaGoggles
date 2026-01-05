@@ -286,10 +286,12 @@ def run_selenium(browser, customerdomain):
                 )
             )
 
-            # js_script = """
+
 
     else:
         raise ValueError('Expected the reports table to have a length of 11')
+
+    redact_info(browser)
 
 def verify_navigation_links(browser):
     """
