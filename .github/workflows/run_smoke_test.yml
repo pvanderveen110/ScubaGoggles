@@ -166,11 +166,7 @@ jobs:
           FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \))
           echo "Found files?: "
           echo $FILESET
-          $FILESET | while IFS= read -r -d '' file; do
-            # perl -i -pe 's/(<[^>]*class\s*=\s*["\x27"][^>]*redact[^>]*["\x27"][^>]*>).*?(<\/[^>]*>)/$1\ /sg' "$file"
-            echo "file: "
-            echo $file
-          done
+          $FILESET | perl -i -pe 's/(<[^>]*class\s*=\s*["\x27"][^>]*redact[^>]*["\x27"][^>]*>).*?(<\/[^>]*>)/$1\ /sg' "$file"
 
       - name: Run Lighthouse CI
         run: |
