@@ -195,13 +195,15 @@ class Reporter:
                               fragments: list,
                               tenant_info: dict,
                               report_uuid: str,
-                              darkmode: str) -> str:
+                              darkmode: str,
+                              redaction: str) -> str:
         """
         Builds the Front Page Report using the HTML Report Template
 
         :param fragments: list object containing each baseline
         :param tenant_info: list object containing each baseline
         :param darkmode: enable/disable dark mode
+        :param redaction: enable/disable report redaction
         """
 
         template_file = (cls._reporter_path
@@ -232,7 +234,7 @@ class Reporter:
 
         html = html.replace('{{DARK_MODE_TOGGLE}}', dark_mode_toggle_button)
         html = html.replace('{{SGR_SETTINGS}}',
-                            f'<span id="sgr_settings" data-darkmode="{darkmode}"></span>')
+                            f'<span id="sgr_settings" data-darkmode="{darkmode}" data-redaction="{redaction}"></span>')
 
         front_css_file = cls._reporter_path / 'styles/FrontPageStyle.css'
         css = front_css_file.read_text(encoding='utf-8')
@@ -549,7 +551,7 @@ class Reporter:
             html = html.replace('{{WARNING_NOTIFICATION}}', '')
         return html
 
-    def _build_report_html(self, fragments: list, rules_data : dict, darkmode: str) -> str:
+    def _build_report_html(self, fragments: list, rules_data : dict, darkmode: str, redaction: str) -> str:
         """
         Adds data into HTML Template and formats the page accordingly
 
@@ -557,6 +559,7 @@ class Reporter:
         :param rules_data: the 'actual_value' for GWS.COMMONCONTROLS.13.1 if
             present, None otherwise
         :param darkmode: enable/disable dark mode
+        :param redaction: enable/disable report redaction
         """
 
         template_file = (self._reporter_path
@@ -593,7 +596,7 @@ class Reporter:
         dark_mode_toggle_button = dark_mode_toggle_template.read_text(encoding='utf-8')
         html = html.replace('{{DARK_MODE_TOGGLE}}', dark_mode_toggle_button)
         html = html.replace('{{SGR_SETTINGS}}',
-                            f'<span id="sgr_settings" data-darkmode="{darkmode}"></span>')
+                            f'<span id="sgr_settings" data-darkmode="{darkmode}" data-redaction="{redaction}"></span>')
 
         html = self._insert_classroom_warning(html)
 
@@ -877,7 +880,8 @@ class Reporter:
     def rego_json_to_ind_reports(self,
                                  test_results: list,
                                  out_path: str,
-                                 darkmode: str) -> list:
+                                 darkmode: str,
+                                 redaction: str) -> list:
         """
         Transforms the Rego JSON output into individual HTML and JSON reports
 
@@ -885,6 +889,7 @@ class Reporter:
             deserialized from JSON data.
         :param out_path: output path where HTML should be saved
         :param darkmode: enable/disable dark mode
+        :param redaction: enable/disable report redaction
         """
 
         product = self._product
@@ -1090,7 +1095,7 @@ class Reporter:
             results_data.update({'GroupReferenceURL': group_reference_url})
             results_data.update({'Controls': self._sanitize_details(table_data)})
             json_data.append(results_data)
-        html = self._build_report_html(fragments, rules_data, darkmode)
+        html = self._build_report_html(fragments, rules_data, darkmode, redaction)
         with open(f'{out_path}/IndividualReports/{ind_report_name}.html',
                         mode='w', encoding='UTF-8') as html_file:
             html_file.write(html)

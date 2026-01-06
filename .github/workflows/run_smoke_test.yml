@@ -126,11 +126,6 @@ jobs:
           ${{ env.SCUBAGOGGLES_ACTIVATE_VENV }}
           pytest ./scubagoggles/Testing/Functional/SmokeTests/ -vvv --subjectemail="${{ secrets.GWS_SUBJECT_EMAIL }}" --customerdomain="${{ secrets.GWS_DOMAIN }}"
           FOUNDIT=$(find /home/runner/scubagoggles -type d -name "GWSBaselineConformance_*")
-          echo $FOUNDIT
-          # FILESET=$(find $FOUNDIT -type f \( -name "*.html" -o -name "*.htm" \))
-          # echo "Found files?: "
-          # echo $FILESET
-          # $FILESET | -exec node ./scubagoggles/reporter/scripts/redaction.js
           echo "cachepath=$FOUNDIT" >> $GITHUB_OUTPUT
 
       - name: Cache the output directory
@@ -158,15 +153,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-
-      - name: List Files restored
-        run: |
-          echo "files inquiry: /home/runner/scubagoggles"
-          ls /home/runner/scubagoggles
-          FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \))
-          echo "Found files?: "
-          echo $FILESET
-          $FILESET | perl -i -pe 's/(<[^>]*class\s*=\s*["\x27"][^>]*redact[^>]*["\x27"][^>]*>).*?(<\/[^>]*>)/$1\ /sg' "$file"
 
       - name: Run Lighthouse CI
         run: |

@@ -103,6 +103,7 @@ const getSetting = (setting) => {
     if (reportSettings === null || reportSettings === undefined) {
         return undefined;
     }
+    console.log(reportSettings)
     return JSON.parse(reportSettings)[setting];
 }
 
@@ -250,7 +251,6 @@ const truncateDNSTables = (maxRows) => {
     }
 }
 
-
 /**
  * Apply scope attributes to columns and rows
  */
@@ -308,31 +308,35 @@ const applyScopeAttributes = () => {
 }
 
 function redaction() {
-    console.log('Starting redaction')
+    const cliElement = document.getElementById("sgr_settings");
+    const cliElementValue = cliElement.getAttribute("data-redaction");
 
-    try {
-        const identityTable = document.querySelectorAll("table")[0]
+    if (cliElementValue !== "None" && cliElementValue == "true") {
+        try {
+            const identityTable = document.querySelectorAll("table")[0]
 
-        let tbody = identityTable.querySelector("tbody")
+            let tbody = identityTable.querySelector("tbody")
 
-        if (!tbody) throw new Error(
-            `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
-        )
+            if (!tbody) throw new Error(
+                `Invalid HTML structure, <table id='${identityTable.getAttribute("id")}'> does not have a <tbody> tag.`
+            )
 
-        if (tbody.children[1].children) {
-            console.log('found identification row: ', tbody.children[1].children)
-            let identityData = tbody.children[1].children
+            if (tbody.children[1].children) {
+                console.log('found identification row: ', tbody.children[1].children)
+                let identityData = tbody.children[1].children
 
-            for (let cell of identityData) {
-                // cell.textContent = '[Redacted]'
-                cell.classList.add('redact')
+                for (let cell of identityData) {
+                    cell.classList.add('redact')
+                }
+
             }
 
+        } catch (error) {
+            console.error(`Error redacting `)
         }
-
-    } catch (error) {
-        console.error(`Error redacting `)
+        return;
     }
+
 }
 
 window.addEventListener('DOMContentLoaded', () => {
