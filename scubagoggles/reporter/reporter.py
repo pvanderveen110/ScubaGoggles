@@ -191,6 +191,7 @@ class Reporter:
         return table_html
 
     @classmethod
+    # pylint: disable-next=too-many-positional-arguments
     def build_front_page_html(cls,
                               fragments: list,
                               tenant_info: dict,
