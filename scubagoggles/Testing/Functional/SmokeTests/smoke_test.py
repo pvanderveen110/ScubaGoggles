@@ -8,7 +8,6 @@ import pytest
 
 from smoke_test_utils import (get_output_path,
                               get_required_entries,
-                              redact_info,
                               run_selenium,
                               sample_report_dir,
                               top_report_url,
@@ -78,7 +77,6 @@ class SmokeTest:
             report_path: str = top_report_url(output_path)
             browser.get(report_path)
             run_selenium(browser, customerdomain)
-            redact_info(browser)
         except (ValueError, AssertionError, Exception) as e:
             browser.quit()
             pytest.fail(f'An error occurred, {e}')
