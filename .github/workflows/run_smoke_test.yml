@@ -166,10 +166,11 @@ jobs:
           FILESET=$(find /home/runner/scubagoggles -type f \( -name "*.html" -o -name "*.htm" \))
           echo "Found files?: "
           echo $FILESET
-          chmod +x /home/runner/scubagoggles
+          chmod +x /home/runner/scubagoggles/*
           $FILESET | while IFS= read -r -d '' file; do
             perl -i -pe 's/(<[^>]*class\s*=\s*["\x27"][^>]*redact[^>]*["\x27"][^>]*>).*?(<\/[^>]*>)/$1\ /sg' "$file"
           done
+        shell: bash
 
 
       - name: Run Lighthouse CI
