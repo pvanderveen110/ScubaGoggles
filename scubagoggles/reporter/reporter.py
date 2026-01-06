@@ -234,7 +234,7 @@ class Reporter:
 
         html = html.replace('{{DARK_MODE_TOGGLE}}', dark_mode_toggle_button)
         html = html.replace('{{SGR_SETTINGS}}',
-                            f'<span id="sgr_settings" data-darkmode="{darkmode}" data-redaction="{redaction}"></span>')
+        f'<span id="sgr_settings" data-darkmode="{darkmode}"data-redaction="{redaction}"></span>')
 
         front_css_file = cls._reporter_path / 'styles/FrontPageStyle.css'
         css = front_css_file.read_text(encoding='utf-8')
@@ -596,7 +596,7 @@ class Reporter:
         dark_mode_toggle_button = dark_mode_toggle_template.read_text(encoding='utf-8')
         html = html.replace('{{DARK_MODE_TOGGLE}}', dark_mode_toggle_button)
         html = html.replace('{{SGR_SETTINGS}}',
-                            f'<span id="sgr_settings" data-darkmode="{darkmode}" data-redaction="{redaction}"></span>')
+        f'<span id="sgr_settings" data-darkmode="{darkmode}" data-redaction="{redaction}"></span>')
 
         html = self._insert_classroom_warning(html)
 
